@@ -1,0 +1,22 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+library(carData)
+```
+
+```{r}
+data('Moore')
+```
+
+
+```{r}
+View(Moore)
+```
+
+
+```{r}
+names(Moore)
+```
+

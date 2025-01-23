@@ -1,0 +1,260 @@
+---
+title: "Activité_BOSTON"
+output: html_document
+date: "2024-02-01"
+---
+------------- Réponse à la première question----------------------------------------------------------
+## cellule numéro 0 pour les informations nécessaires à la reponse de la question 1
+## télecharger ou charger la library(Mass) le package contenant le jeu de donnée Boston
+
+```{r}
+library(MASS)
+```
+
+# ON charge Maintenant le jeu de donnée Boston
+```{r}
+data("Boston")
+```
+
+# visualisation du jeu des données Boston
+```{r}
+View(Boston)
+```
+
+# Répresentation du nuage des points dans un repère
+#  Pour representer ce nuage des points on va faire appel  à la fonction ggplot2, raison pour laquelle il faut
+# d'abord le chager en mémoire par la commande  library(ggplot2)
+
+```{r}
+library("ggplot2")
+```
+
+# Répresentation du nuage :   il faut taper la commande suivante ggplot(Boston, aes(x=medv, y=lstat)) + geom_point() 
+```{r}
+ggplot(Boston, aes(x=medv, y=lstat)) + geom_point() 
+```
+# ou plot(Boston$medv,Boston$lstat) pour représenter le nuage 
+# x <- Boston$medv
+# y <- Boston$lstat
+```{r}
+plot(Boston$medv,Boston$lstat)
+```
+# ou plot(Boston$medv,Boston$lstat) pour représenter le nuage 
+# x <- Boston$medv
+# y <- Boston$lstat
+```{r}
+x<-Boston$medv
+y<-Boston$lstat
+plot(x,y)
+```
+
+## Attention erreur à ne pas faire  le x = medv et non lstat d'après lhypothèse
+
+```{r}
+ggplot(Boston, aes(x=lstat,y=medv)) + geom_point()  ## attention erreur le x = medv et non last d'après lhypothèse
+```
+
+## Discussion
+## On pourrait d'après la forme de notre nuage de points  estimer par un polynôme de degrés 2 : Yi  = ax(i)**2 + bx + c
+------------- Fin de la Réponse à la première question----------------------------------------------------------
+
+------------- Résponse à la deuxième question-------------------------------------------------------------------
+# Avant tout il faut comprendre la fonction lm
+```{r}
+?lm
+```
+
+##### Description de la fonction lm
+---
+lm is used to fit linear models. It can be used to carry out regression, single stratum analysis of variance and analysis of covariance (although aov may provide a more convenient interface for these).
+
+Usage
+lm(formula, data, subset, weights, na.action,
+   method = "qr", model = TRUE, x = FALSE, y = FALSE, qr = TRUE,
+   singular.ok = TRUE, contrasts = NULL, offset, ...)
+---
+### Nous estimons  le modèle Yi  = ax(i)**2 + bx + c  où les a,b,c sont des coeffs à déterminer
+#Yi = Boston$lstat
+#x(i)² = Boston$medv^2 
+#x(i) = Boston$medv 
+# et finalement Yi  = ax(i)**2 + bx + c  = Boston$lstat~Boston$medv+I(Boston$medv^2) ou le I signifie le carré
+```{r}
+modele = lm(Boston$lstat~Boston$medv +I(Boston$medv^2))
+summary(modele)
+```
+# Ainsi on a  ĉ =39.047 ^b = - 1.715 , â = 0.020 sont les beta chapeau(les estimateurs du modèles)
+
+## Testons la significativité du modèle
+
+# qf(c(0.95,0.99),2,503) = quantile de la loi fischer ou 503 est le degré de liberté 2 le nombre des covariables non constantes
+# 0.95 de confiance donc on considère un risque 5%
+# 0.99  de confiance donc on considère un risque 1%
+# 503 est le degré de liberté
+```{r}
+qf(c(0.95,0.99),2,503)
+```
+# on remarque que la F-statistic = 531.7 > 3.013645 au seuil de 5% 
+# on remarque que la F-statistic = 531.7 > 4.647591 au seuil de 1%.
+# On peut donc rejeter l' hypothèse des coefs nuls. les coefficients ne sont donc pas nuls
+
+
+# Ou encore 
+```{r}
+cilevel = 0.95 # niveau de confiance
+if (summary(modele)$fstatistic[1]>qf(cilevel,df1=summary(modele)$fstatistic[2],df2=summary(modele)$fstatistic[3])){print("modele significatif")} else{print("modele non significatif")}
+```
+
+
+
+```{r}
+cilevel = 0.99 # niveau de confiance 
+if (summary(modele)$fstatistic[1]>qf(cilevel,df1=summary(modele)$fstatistic[2],df2=summary(modele)$fstatistic[3])){print("modele significatif")} else{print("modele non significatif")}
+```
+# Ou encore
+
+# Ici le niveau de confiance est 0.95
+# modele$df.residual =  modele$df.res 
+```{r}
+qf(0.95,2,modele$df.residual)
+```
+# Ici le niveau de confiance est 0.99
+# modele$df.residual =  modele$df.res 
+```{r}
+qf(0.99,2,modele$df.res)
+```
+
+# conclusion avaec cette méthode
+
+------------- Fin de la Résponse à la deuxième question----------------------------------------------------------
+
+
+------------- Résponse à la troisième question-------------------------------------------------------------------
+
+
+# Pour connaitre tous les élements de modèle
+```{r}
+names(modele) 
+```
+
+# La nouvelle valeur de x = medv = 15
+# donnons la nouvelle valeur de y = lstat =?
+
+```{r}
+x=15
+y = modele$coefficients[1] + modele$coefficients[2]*x + modele$coefficients[3]*x**2
+y
+```
+# la nouvelle valeur de y = lstat =    17.97683 
+
+
+
+# on determine le niveau de confiance, car nous allons déterminer le quantile de student.
+```{r}
+niveau_de_confiance= 1 - (0.05/2) # 1-alpha/2
+niveau_de_confiance
+```
+
+
+
+# Intervalle de confiance
+
+--- Information Cours
+#Sur la base de n données observées, et lorsque les erreurs sont indépendantes de même
+#loi normale centrée, un intervalle au niveau de confiance 1 − α pour la prédiction d’une
+#nouvelle donnée Y associée au régresseur x est : 
+#Voir l'intervalle  de confiance de l'encadrer de la page 21
+
+# On commence par trouver le quantile de student
+```{r}
+quantile = qt(0.975,503) 
+quantile
+```
+
+# On construit ensuite la matrice X
+```{r}
+X = cbind(rep(1,506),Boston$medv,Boston$medv^2)
+X
+```
+
+# On détermine sa transposé X^T
+```{r}
+transposeX = t(X)
+transposeX 
+```
+
+# On calcul le produit matricielle X*X^T
+```{r}
+prod = transposeX %*% X
+prod
+```
+
+# On determine son inverse  soit le resultat de ( X*X^T)^-1
+```{r}
+inv = solve(prod)
+inv
+```
+
+# Définir les  nouvelles  composantes du vecteurs X_new = (1,x,x**2)
+```{r}
+x = c(1,15,15**2)
+x
+```
+
+# Calculer ensuite le produit (x^T*(X^TX)^-1*x)
+
+```{r}
+prod1 = t(x)%*%inv%*%x
+prod1
+
+```
+
+# Calculer ensuite le produit (x^T*(X^TX)^-1*x) +1
+```{r}
+ad = 1+ prod1
+ad
+```
+
+# Calculons la variance sigma^2
+```{r}
+var = (1/503) *sum(modele$residuals^2)
+```
+
+
+# Calculons finalement l'intevalle lui même
+```{r}
+IC = c(y - quantile*sqrt(var*ad), y + quantile*sqrt(var*ad))
+IC
+```
+
+# La plus pétite valeur de y^
+```{r}
+yinf = y - qt(0.975,503)
+yinf
+```
+# La plus grande valeur de y^
+
+```{r}
+ysup = y + qt(0.975,503) 
+ysup
+```
+
+
+------------- Fin de la Réponse àla troisième  question----------------------------------------------------------
+
+
+
+------------- la Réponse àla quatrième  question----------------------------------------------------------
+# Pour juxtaposer les quatres figures
+```{r}
+par(mfrow=c(2,2))
+```
+
+#Tester visuellement  la validité du modèle
+```{r}
+plot(lm(formula = Boston$lstat ~ Boston$medv + I(Boston$medv^2)))
+```
+
+
+
+------------- Fin de la Réponse àla quatrième  question----------------------------------------------------------
+

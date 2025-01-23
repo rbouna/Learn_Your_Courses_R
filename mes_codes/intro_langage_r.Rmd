@@ -1,0 +1,205 @@
+```{r}
+2+3
+3+5
+6-5
+1-1
+-9+6
+```
+```{r}
+dy<-exp(2)
+z<-exp(5)
+y
+z
+print(y*z)
+```
+```{r}
+save.image()  # l’image est sauvegardée dans un ﬁchier nommé .RData dans
+              #  le dossier de travail actif
+```
+
+
+```{r}
+## Générer deux vecteurs de nombres pseudo-aléatoires issus
+### d'une loi normale centrée réduite.
+x <- rnorm(50)
+y <- rnorm(x)
+```
+
+
+```{r}
+### Graphique des couples (x, y).
+plot(x, y)
+```
+
+
+```{r}
+### Graphique d'une approximation de la densité du vecteur x.
+plot(density(x))
+```
+
+
+```{r}
+### Générer la suite 1, 2, ..., 10.
+1:10
+```
+
+
+```{r}
+### La fonction 'seq' sert à générer des suites plus générales.
+seq(from = -5, to = 10, by = 3)
+seq(from = -5, length = 10)
+```
+
+
+```{r}
+### La fonction 'rep' sert à répéter des valeurs.
+rep(1, 5)
+```
+
+
+```{r}
+# répéter 1 cinq fois
+rep(1:5, 5)
+```
+
+
+```{r}
+# répéter le vecteur 1,...,5 cinq fois
+rep(1:5, each = 5) # répéter chaque élément du vecteur cinq fois
+```
+
+
+```{r}
+### Arithmétique vectorielle.
+v <- 1:12
+```
+
+```{r}
+### Pour afficher le résultat d'une affectation, placer la
+### commande entre parenthèses.
+( v <- runif(12, min = 1, max = 10) )
+```
+
+
+```{r}
+# initialisation d'un vecteur
+v + 2
+```
+
+
+```{r}
+# additionner 2 à chaque élément de v
+v * -12:-1
+```
+
+
+```{r}
+# produit élément par élément
+v + 1:3
+```
+
+
+```{r}
+# le vecteur le plus court est recyclé
+### Vecteur de nombres uniformes sur l'intervalle [1, 10].
+v <- runif(12, min = 1, max = 10)
+v
+```
+
+```{r}
+### Arrondi des valeurs de v à l'entier près.
+( v <- round(v) )
+```
+
+```{r}
+### Créer une matrice 3 x 4 à partir des valeurs de
+### v. Remarquer que la matrice est remplie par colonne.1.11. Exercices
+( m <- matrix(v, nrow = 3, ncol = 4) )
+
+```
+
+
+```{r}
+### Les opérateurs arithmétiques de base s'appliquent aux
+### matrices comme aux vecteurs.
+m + 2
+m * 3
+m ^ 2
+```
+
+
+
+```{r}
+### Éliminer la quatrième colonne afin d'obtenir une matrice
+### carrée.
+( m <- m[,-4] )
+```
+
+```{r}
+### Transposée et inverse de la matrice m.
+t(m)
+solve(m)
+```
+
+```{r}
+### Produit matriciel.
+m %*% m
+```
+
+```{r}
+# produit de m avec elle-même
+m %*% solve(m)
+```
+
+
+```{r}
+# produit de m avec son inverse
+round(m %*% solve(m)) # l'arrondi donne la matrice identité
+```
+
+```{r}
+### Consulter la rubrique d'aide de la fonction 'solve'.
+?solve
+```
+
+
+```{r}
+### Liste des objets dans l'espace de travail.
+ls()
+
+```
+
+```{r}
+### Nettoyage.
+rm(x, y, v, m)
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+

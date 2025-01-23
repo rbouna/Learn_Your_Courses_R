@@ -1,0 +1,66 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# visualisation avec ggplot2
+# On charge d'abord tidyverse ( ce package conteint contient plusieurs autres packages tels que :
+# ggplot2
+# tibble
+# tidyr
+# purrr
+# readr
+# dplyr)
+```{r}
+install.packages("tidyverse")
+```
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+library(ggplot2)
+```
+
+# displ  = taille des enziins(voitures grosse catégory)
+# hwy = capacité en carburant sur les long trajet
+# mpg = fait un mapping pour montrer comment les utilisateurs en capacité petite en carburant consomme par par rapport à ceux à grande capacité (grande consomation ) sur # le même trajet
+```{r}
+ggplot(mpg,aes(x = displ,y=hwy)) + geom_point(aes(colout=class))
+```
+# La courbe montre une relation negative entre la taille des engins(hwy) par rapport à la capacité de carburant(displ)
+#
+#
+#
+#
+```{r}
+ggplot(data = mpg) + geom_point(mapping = aes(x=displ, y = hwy, color = class))
+```
+
+```{r}
+ggplot(data = mpg) + geom_point(mapping = aes(x=displ, y = hwy), size = class))
+```
+```{r}
+ggplot(data = mpg) + geom_point(mapping = aes(x=displ, y = hwy), alpha = class))
+```
+
+
+```{r}
+ggplot(data = mpg) + geom_point(mapping = aes(x=displ, y = hwy, shape = class))
+```
+```{r}
+ggplot(data = mpg) + geom_point(mapping = aes(x=displ, y = hwy, color ="blue"))
+```
+```{r}
+?mpg
+```
+
+```{r}
+ggplot(data = mpg) + geom_point(mapping = aes(x=displ, y = hwy)) + facet_wrap(~class,nrow=2)
+```
+
+```{r}
+ggplot(data = mpg) + geom_point(mapping = aes(x=displ, y = hwy)) + facet_grid(drv~cyl)
+```
+
